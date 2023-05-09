@@ -6,9 +6,16 @@ namespace TodoApp.Controllers
     [Route("[controller]")]
     public class TodosController
     {
+        private ITodoRepository repo;
+
+        public TodosController(ITodoRepository repo)
+        {
+            this.repo = repo;
+            }
+
         [HttpGet(Name = "GetTodos")]
-        public string[] Get() {
-            return Array.Empty<string>();
+        public IEnumerable<Todo> Get() {
+            return this.repo.Todos;
         }
     }
 }
