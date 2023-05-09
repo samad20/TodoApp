@@ -52,6 +52,7 @@ namespace TodoApp.Tests
             {
                 var builder = WebApplication.CreateBuilder();
                 builder.Services.AddControllers().AddApplicationPart(typeof(TodosController).Assembly);
+                builder.Services.AddScoped<ITodoRepository, InMemoryTodoRepository>();
                 var app = builder.Build();
                 app.UseHttpsRedirection();
                 app.UseAuthorization();
