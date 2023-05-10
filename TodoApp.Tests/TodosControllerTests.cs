@@ -11,37 +11,42 @@ namespace TodoApp.Tests
     [TestFixture]
     public class TodosControllerTests
     {
-        [Test]
-        public void Get_ReturnEmptyResultSet()
+        public class Get
         {
-            //Arrange
-            var repo = Substitute.For<ITodoRepository>();
-            repo.Todos.Returns(new Todo[] { });
-            var sut = new TodosController(repo);
+            [Test]
+            public void WhenRepositoryHasNoTodos_ReturnEmptyResultSet()
+            {
+                //Arrange
+                var sut = CreateTodosController();
 
-            //Act
-            var result = sut.Get();
+                //Act
+                var result = sut.Get();
 
-            //Assert
-            Assert.AreEqual(0, result.Count());
+                //Assert
+                Assert.AreEqual(0, result.Count());
+            }
+
+            
+            [Test]
+            public void WhenRepositoryHasTodos_shouldReturnTodos()
+            {
+                //Arrange
+                var sut = CreateTodosController("Test");
+
+                //Act
+                var result = sut.Get();
+
+                //Assert
+                Assert.AreEqual(1, result.Count());
+                Assert.AreEqual("Test", result.First().description);
+            }
+            public static TodosController CreateTodosController(params string[] todos)
+            {
+                var repo = Substitute.For<ITodoRepository>();
+                repo.Todos.Returns(todos.Select(t => new Todo(t)));
+                return new TodosController(repo);
+            }
+
         }
-
-
-        [Test]
-        public void Get_WhenRepoHasTodos_shouldReturnTodos()
-        {
-            //Arrange
-            var repo = Substitute.For<ITodoRepository>();
-            repo.Todos.Returns(new Todo[] { new Todo("Test") });
-            var sut = new TodosController(repo);
-
-            //Act
-            var result = sut.Get();
-
-            //Assert
-            Assert.AreEqual(1, result.Count());
-            Assert.AreEqual("Test", result.First().description);
-        }
-
     }
 }
