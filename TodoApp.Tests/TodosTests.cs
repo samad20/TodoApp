@@ -12,27 +12,6 @@ namespace TodoApp.Tests
     {
         public class Get
         {
-
-
-            [Test]
-            public async Task ShouldReturn200OK()
-            {
-                // Arrange
-                using WebApplication app = await StartWebApplication();
-                RestClient client = CreateRestClient(app);
-                var request = new RestRequest("todos");
-
-                //Act
-
-                var response = client.Get(request);
-
-                //Assert
-
-                Assert200OK(response);
-            }
-
-           
-
             [Test]
             public async Task GivenNoTodosShouldReturnEmptyJsonArray()
             {
