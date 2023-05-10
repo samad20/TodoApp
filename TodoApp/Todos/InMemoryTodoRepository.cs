@@ -1,4 +1,4 @@
-﻿namespace TodoApp.Controllers
+﻿namespace TodoApp.Todos
 {
     public class InMemoryTodoRepository : ITodoRepository
     {
