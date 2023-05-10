@@ -2,8 +2,8 @@
 {
     public class InMemoryTodoRepository : ITodoRepository
     {
-        public InMemoryTodoRepository() { 
-            Todos = new List<Todo>();
+        public InMemoryTodoRepository(IEnumerable<Todo> todos) {
+            Todos = todos;
         }
         public IEnumerable<Todo> Todos { get; }
     }
