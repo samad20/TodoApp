@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TodoApp.Controllers;
+using TodoApp.Todos;
 
 namespace TodoApp.Tests
 {
@@ -42,8 +42,7 @@ namespace TodoApp.Tests
             }
             public static TodosController CreateTodosController(params string[] todos)
             {
-                var repo = Substitute.For<ITodoRepository>();
-                repo.Todos.Returns(todos.Select(t => new Todo(t)));
+                var repo = new InMemoryTodoRepository(todos.Select(t => new Todo(t)));
                 return new TodosController(repo);
             }
 
