@@ -12,9 +12,9 @@ namespace TodoApp.Tests
     {
         public class Get
         {
-            
 
-        [Test]
+
+            [Test]
             public async Task ShouldReturn200OK()
             {
                 // Arrange
@@ -48,16 +48,64 @@ namespace TodoApp.Tests
                 Assert.AreEqual("[]", response.Content);
             }
 
+            [Test]
+            public async Task GivenOneTodos_ShouldReturnTodosInJsonArray()
+            {
+                // Arrange
+                var todos = new List<Todo>() { new Todo("Say Hello world!") };
+                using WebApplication app = await StartWebApplication(todos);
+                RestClient client = CreateRestClient(app);
+                var request = new RestRequest("todos");
+
+                //Act
+
+                var response = client.Get(request);
+
+                //Assert
+
+                Assert.AreEqual("[{\"description\":\"Say Hello world!\"}]", response.Content);
+            }
+
+            [Test]
+            public async Task GivenManyTodos_ShouldReturnTodosInJsonArray()
+            {
+                // Arrange
+                var todos = new List<Todo>() { new Todo("1"), new Todo("2"), new Todo("3") };
+                using WebApplication app = await StartWebApplication(todos);
+                RestClient client = CreateRestClient(app);
+                var request = new RestRequest("todos");
+
+                //Act
+
+                var response = client.Get(request);
+
+                //Assert
+
+                Assert.AreEqual("[{\"description\":\"1\"},{\"description\":\"2\"},{\"description\":\"3\"}]", response.Content);
+            }
+
             private static async Task<WebApplication> StartWebApplication()
+            {
+                WebApplication app = CreateWebApplication(new List<Todo>());
+                await app.StartAsync();
+                return app;
+            }
+            private static async Task<WebApplication> StartWebApplication(IEnumerable<Todo> todos)
+            {
+                WebApplication app = CreateWebApplication(todos);
+                await app.StartAsync();
+                return app;
+            }
+
+            private static WebApplication CreateWebApplication(IEnumerable<Todo> todos)
             {
                 var builder = WebApplication.CreateBuilder();
                 builder.Services.AddControllers().AddApplicationPart(typeof(TodosController).Assembly);
-                builder.Services.AddScoped<ITodoRepository, InMemoryTodoRepository>();
+                builder.Services.AddScoped<ITodoRepository>((sp) => new InMemoryTodoRepository(todos));
                 var app = builder.Build();
                 app.UseHttpsRedirection();
                 app.UseAuthorization();
                 app.MapControllers();
-                await app.StartAsync();
                 return app;
             }
 
@@ -69,6 +117,6 @@ namespace TodoApp.Tests
             }
 
         }
-    
+
     }
 }

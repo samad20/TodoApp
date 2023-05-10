@@ -32,7 +32,7 @@ namespace TodoApp.Tests
         {
             //Arrange
             var repo = Substitute.For<ITodoRepository>();
-            repo.Todos.Returns(new Todo[] { new Todo() });
+            repo.Todos.Returns(new Todo[] { new Todo("Test") });
             var sut = new TodosController(repo);
 
             //Act
@@ -40,8 +40,8 @@ namespace TodoApp.Tests
 
             //Assert
             Assert.AreEqual(1, result.Count());
+            Assert.AreEqual("Test", result.First().description);
         }
 
     }
 }
-
