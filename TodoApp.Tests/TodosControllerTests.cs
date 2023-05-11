@@ -42,7 +42,7 @@ namespace TodoApp.Tests
             }
             public static TodosController CreateTodosController(params string[] todos)
             {
-                var repo = new InMemoryTodoRepository(todos.Select(t => new Todo(t)));
+                var repo = new InMemoryTodoRepository(todos.Select((descrepition ,id)=> new Todo(id, descrepition)));
                 return new TodosController(repo);
             }
 
