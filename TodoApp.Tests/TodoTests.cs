@@ -11,37 +11,40 @@ namespace TodoApp.Tests
 {
     public class TodoTests
     {
-        [Test]
-        public async Task GivenNoTodosWithMatchingID_ShouldReturn404NotFound()
+       public class Get
         {
-            // Arrange
-            using WebApplication app = await TestHelpers.StartWebApplication();
-            RestClient client = TestHelpers.CreateRestClient(app);
-            var request = new RestRequest("todo/0");
+            [Test]
+            public async Task GivenNoTodosWithMatchingID_ShouldReturn404NotFound()
+            {
+                // Arrange
+                using WebApplication app = await TestHelpers.StartWebApplication();
+                RestClient client = TestHelpers.CreateRestClient(app);
+                var request = new RestRequest("todo/0");
 
-            //Act
+                //Act
 
-            var response = client.Get(request);
+                var response = client.Get(request);
 
-            //Assert
-            response.AssertIs404NotFound();
-        }
+                //Assert
+                response.AssertIs404NotFound();
+            }
 
-        [Test]
-        public async Task GivenTodosWithMatchingID_ShouldReturnTodoAsJson()
-        {
-            // Arrange
-            var todos = TestHelpers.CreateTodoList("todo0");
-            using var app = await TestHelpers.StartWebApplication(todos);
-            var client = TestHelpers.CreateRestClient(app);
-            var request = new RestRequest("todo/0");
+            [Test]
+            public async Task GivenTodosWithMatchingID_ShouldReturnTodoAsJson()
+            {
+                // Arrange
+                var todos = TestHelpers.CreateTodoList("todo0");
+                using var app = await TestHelpers.StartWebApplication(todos);
+                var client = TestHelpers.CreateRestClient(app);
+                var request = new RestRequest("todo/0");
 
-            //Act
-            var response = client.Get(request);
+                //Act
+                var response = client.Get(request);
 
-            //Assert
-            response.Assert200OK();
-            response.Content.AssertIsJsonForTodo(todos.First());
+                //Assert
+                response.Assert200OK();
+                response.Content.AssertIsJsonForTodo(todos.First());
+            }
         }
     }
 }
