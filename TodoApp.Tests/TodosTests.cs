@@ -25,7 +25,7 @@ namespace TodoApp.Tests
                 var response = client.Get(request);
 
                 //Assert
-                ResponseAssert.Assert200OK(response);
+                response.Assert200OK();
                 Assert.AreEqual("[]", response.Content);
             }
 
@@ -43,9 +43,9 @@ namespace TodoApp.Tests
                 var response = client.Get(request);
 
                 //Assert
-                ResponseAssert.Assert200OK(response);
+                response.Assert200OK();
                 response.Content.AssertIsJsonForTodos(todos);
-                //Assert.AreEqual("[{\"description\":\"Say Hello world!\"}]", response.Content);
+
             }
 
             
@@ -64,9 +64,8 @@ namespace TodoApp.Tests
                 var response = client.Get(request);
 
                 //Assert
-                ResponseAssert.Assert200OK(response);
+                response.Assert200OK();
                 response.Content.AssertIsJsonForTodos(todos);
-                //Assert.AreEqual("[{\"description\":\"1\"},{\"description\":\"2\"},{\"description\":\"3\"}]", response.Content);
             }
             
         }

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace TodoApp.Tests
 {
-    public class ResponseAssert
+    internal static class ResponseAssert
     {
-        public static void Assert200OK(RestResponse response)
+        public static void Assert200OK(this RestResponse response)
         {
             Assert.AreEqual(System.Net.HttpStatusCode.OK, response.StatusCode);
         }
-        public static void AssertIs404NotFound(RestResponse response)
+        public static void AssertIs404NotFound(this RestResponse response)
         {
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, response.StatusCode);
         }

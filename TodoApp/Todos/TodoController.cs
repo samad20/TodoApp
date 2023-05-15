@@ -3,7 +3,7 @@
 namespace TodoApp.Todos
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("todo")]
     public class TodoController
     {
         private ITodoRepository repo;

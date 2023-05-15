@@ -24,7 +24,7 @@ namespace TodoApp.Tests
             var response = client.Get(request);
 
             //Assert
-            ResponseAssert.AssertIs404NotFound(response);
+            response.AssertIs404NotFound();
         }
 
         [Test]
@@ -40,9 +40,8 @@ namespace TodoApp.Tests
             var response = client.Get(request);
 
             //Assert
-            ResponseAssert.Assert200OK(response);
-
-            Assert.AreEqual("{\"id\":0,\"description\":\"todo0\"}", response.Content);
+            response.Assert200OK();
+            response.Content.AssertIsJsonForTodo(todos.First());
         }
     }
 }
