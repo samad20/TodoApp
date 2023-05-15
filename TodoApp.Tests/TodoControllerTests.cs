@@ -13,7 +13,7 @@ namespace TodoApp.Tests
     [TestFixture]
     public class TodoControllerTests
     {
-        public class GET
+        public class Get
         {
             [Test]
             public void WhenNoMatchingTodo_ReturnNotFound()
