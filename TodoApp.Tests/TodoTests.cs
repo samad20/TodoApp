@@ -32,18 +32,17 @@ namespace TodoApp.Tests
         {
             // Arrange
             var todos = TestHelpers.CreateTodoList("todo0");
-            using WebApplication app = await TestHelpers.StartWebApplication();
-            RestClient client = TestHelpers.CreateRestClient(app);
+            using var app = await TestHelpers.StartWebApplication(todos);
+            var client = TestHelpers.CreateRestClient(app);
             var request = new RestRequest("todo/0");
 
             //Act
-
             var response = client.Get(request);
 
             //Assert
             ResponseAssert.Assert200OK(response);
 
-            Assert.AreEqual("{\"id:0\",\"description\":\"todo0\"}", response.Content);
+            Assert.AreEqual("{\"id\":0,\"description\":\"todo0\"}", response.Content);
         }
     }
 }
