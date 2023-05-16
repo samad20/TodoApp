@@ -21,7 +21,7 @@ namespace TodoApp.Todos
             return todo;
         }
         [HttpPost(Name = "PostTodo")]
-        public ActionResult Post(Todo todo)
+        public ActionResult<int> Post(TodoPostRequest todoPostRequest)
         {
             return new CreatedResult("todo/0", 0);
         }
