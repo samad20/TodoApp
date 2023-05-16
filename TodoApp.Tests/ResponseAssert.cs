@@ -28,5 +28,12 @@ namespace TodoApp.Tests
             Assert.AreEqual(System.Net.HttpStatusCode.Created, response.StatusCode);
         }
 
+        public static void AssertLocationHeaders(this IRestResponse response, string location)
+        {
+            var locationHeader = response.Headers.First(h => h.Name == "Location");
+            Assert.IsNotNull(locationHeader);
+            Assert.AreEqual(location, locationHeader.Value);
+        }
+
     }
 }
