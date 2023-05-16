@@ -46,5 +46,40 @@ namespace TodoApp.Tests
                 response.Content.AssertIsJsonForTodo(todos.First());
             }
         }
+        public class Post
+        {
+            [TestCase("")]
+            [TestCase("{}")]
+            [TestCase($"{{\"description\":\"\"}}")]
+            public async Task GivenInvalidJsonBody_ShouldResturn400BadRequest(string jsonBody)
+            {
+                //Arrange
+                using var app = await TestHelpers.StartWebApplication();
+                var client = TestHelpers.CreateRestClient(app);
+                var request = new RestRequest("todo");
+                request.AddJsonBody(jsonBody);
+                //Act
+                var response = client.Post(request);
+                //Assert
+                response.AssertIs400BadRequest();
+
+            }
+
+
+            [Test]
+            public async Task GivenJsonBodyWithDescription_ShouldResturn201Created()
+            {
+                //Arrange
+                using var app = await TestHelpers.StartWebApplication();
+                var client = TestHelpers.CreateRestClient(app);
+                var request = new RestRequest("todo");
+                request.AddParameter("application/json", $"{{\"description\":\"test\"}}", ParameterType.RequestBody);
+                //Act
+                var response = client.Post(request);
+                //Assert
+                response.AssertIs201Created();
+                Assert.AreEqual("0", response.Content);
+            }
+        }
     }
 }
