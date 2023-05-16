@@ -79,6 +79,7 @@ namespace TodoApp.Tests
                 //Assert
                 response.AssertIs201Created();
                 Assert.AreEqual("0", response.Content);
+                response.AssertLocationHeaders("todo/0");
             }
         }
     }
