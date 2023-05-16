@@ -20,5 +20,10 @@ namespace TodoApp.Todos
             if (todo == null) return new NotFoundResult(); 
             return todo;
         }
+        [HttpPost(Name = "PostTodo")]
+        public ActionResult Post(Todo todo)
+        {
+            return new CreatedResult("todo/0", 0);
+        }
     }
 }
