@@ -58,34 +58,7 @@ namespace TodoApp.Tests
             
         }
         public class Post {
-            [Test]
-            public void ReturnsId()
-            {
-                //Arrange
-                var todoRequest = CreateTodoPostRequest();
-                var sut = CreateTodoController();
-
-                //Act
-                var result = sut.Post(todoRequest);
-
-                //Assert
-                Assert.Greater(result.Value, -1);
-            }
-            [Test]
-            public void AddsTodo()
-            {
-                //Arrange
-                var todoRequest = CreateTodoPostRequest();
-                var sut = CreateTodoController();
-
-                //Act
-                var result = sut.Post(todoRequest);
-
-                //Assert
-                var id = result.Value;
-                var todo = sut.Get(id).Value;
-                Assert.AreEqual(todoRequest.description, todo?.description);
-            }
+           
             [Test]
             public void AddsTodo_AndReturnNewId()
             {
@@ -110,10 +83,6 @@ namespace TodoApp.Tests
             private static TodoPostRequest CreateTodoPostRequest(string description)
             {
                 return new TodoPostRequest(description);
-            }
-            private static TodoPostRequest CreateTodoPostRequest()
-            {
-                return new TodoPostRequest("Test TODO");
             }
 
             public static int GetResultValueAsInt(ActionResult<int> result)
