@@ -86,10 +86,43 @@ namespace TodoApp.Tests
                 var todo = sut.Get(id).Value;
                 Assert.AreEqual(todoRequest.description, todo?.description);
             }
+            [Test]
+            public void AddsTodo_AndReturnNewId()
+            {
+                //Arrange
+                var todoRequest1 = CreateTodoPostRequest("Test TODO 1");
+                var todoRequest2 = CreateTodoPostRequest("Test TODO 2");
+                var sut = CreateTodoController();
 
+                //Act
+                var result1 = sut.Post(todoRequest1);
+                var result2 = sut.Post(todoRequest2);
+                //Assert
+                var id1 = GetResultValueAsInt(result1);
+                var todo1 = sut.Get(id1).Value;
+                var id2 = GetResultValueAsInt(result2);
+                var todo2 = sut.Get(id2).Value;
+
+                Assert.AreEqual(todoRequest1.description, todo1?.description);
+                Assert.AreEqual(todoRequest2.description, todo2?.description);
+            }
+
+            private static TodoPostRequest CreateTodoPostRequest(string description)
+            {
+                return new TodoPostRequest(description);
+            }
             private static TodoPostRequest CreateTodoPostRequest()
             {
                 return new TodoPostRequest("Test TODO");
+            }
+
+            public static int GetResultValueAsInt(ActionResult<int> result)
+            {
+                Assert.IsInstanceOf<CreatedResult>(result.Result);
+                var resultValue = ((CreatedResult)result.Result).Value;
+                Assert.IsInstanceOf<int>(resultValue);
+                Assert.IsNotNull(resultValue);
+                return (int)resultValue;
             }
         }
         public static TodoController CreateTodoController(params string[] todos)

@@ -23,7 +23,8 @@ namespace TodoApp.Todos
         [HttpPost(Name = "PostTodo")]
         public ActionResult<int> Post(TodoPostRequest todoPostRequest)
         {
-            return new CreatedResult("todo/0", 0);
+            var id = repo.Add(todoPostRequest.description);
+            return new CreatedResult($"todo/{id}", id);
         }
     }
 }
