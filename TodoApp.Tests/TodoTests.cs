@@ -133,6 +133,36 @@ namespace TodoApp.Tests
                 //updateResponse.Content.AssertIsJsonForTodo(new Todos.Todo(1, "Updated todo description"));
             }
         }
+
+        public class Delete
+        {
+            [Test]
+            public async Task GivenNoTodosWithMatchingID_ShouldResturn404NotFound()
+            {
+                //Arrange
+                using var app = await TestHelpers.StartWebApplication();
+                var client = TestHelpers.CreateRestClient(app);
+                var request = new RestRequest("todo/0");
+                //Act
+                var response = client.Delete(request);
+                //Assert
+                response.AssertIs404NotFound();
+            }
+
+            [Test]
+            public async Task GivenTodosWithMatchingID_ShouldResturnTodoAsJson()
+            {
+                //Arrange
+                var todos = TestHelpers.CreateTodoList("todo0");
+                using var app = await TestHelpers.StartWebApplication(todos);
+                var client = TestHelpers.CreateRestClient(app);
+                var request = new RestRequest("todo/0");
+                //Act
+                var response = client.Delete(request);
+                //Assert
+                response.AssertIs204NoContent();
+            }
+        }
     }
 }
 

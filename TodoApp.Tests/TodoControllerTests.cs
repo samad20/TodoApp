@@ -119,6 +119,21 @@ namespace TodoApp.Tests
                 return new TodoPutRequest(description);
             }
         }
+        public class Delete
+        {
+            [Test]
+            public void RemovesTodo() {
+                //Arrange
+                var sut = CreateTodoController("Todo1", "Todo2");
+
+                //Act
+                sut.Delete(0);
+                var result = sut.Get(0);
+
+                //Assert
+                Assert.IsInstanceOf<NotFoundResult>(result.Result);
+            }
+        }
 
 
         public static TodoController CreateTodoController(params string[] todos)
