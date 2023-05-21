@@ -27,6 +27,10 @@ namespace TodoApp.Tests
         {
             Assert.AreEqual(System.Net.HttpStatusCode.Created, response.StatusCode);
         }
+        public static void AssertIs204NoContent(this IRestResponse response)
+        {
+            Assert.AreEqual(System.Net.HttpStatusCode.NoContent, response.StatusCode);
+        }
 
         public static void AssertLocationHeaders(this IRestResponse response, string location)
         {
