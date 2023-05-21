@@ -26,5 +26,12 @@ namespace TodoApp.Todos
             var id = repo.Add(todoPostRequest.description);
             return new CreatedResult($"todo/{id}", id);
         }
+
+        [HttpPut("{id}", Name = "PutTodo")]
+        public ActionResult Put([FromRoute] int id, TodoPutRequest putRequest)
+        {
+            var existingTodo = repo.Put(id, putRequest.description);
+            return existingTodo is null ? new NotFoundResult() : new NoContentResult();
+        }
     }
 }

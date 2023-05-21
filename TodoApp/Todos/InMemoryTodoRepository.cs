@@ -15,5 +15,16 @@
             _todos.Add(new Todo(newId, description));
             return newId;
         }
+
+        public Todo Put(int id, string description)
+        {
+            var existingTodo = _todos.FirstOrDefault(t => t.Id == id);
+            if (existingTodo != null)
+            {
+                _todos.Remove(existingTodo);
+                _todos.Add(new Todo(id, description));
+            }
+            return existingTodo;
+        }
     }
 }

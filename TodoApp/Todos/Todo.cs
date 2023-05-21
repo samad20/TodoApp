@@ -3,6 +3,7 @@
 namespace TodoApp.Todos
 {
     public record TodoPostRequest([MinLength(3)] string description);
+    public record TodoPutRequest([MinLength(3)] string description);
     public class Todo
     {
         public int Id { get; private set; }
