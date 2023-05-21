@@ -16,6 +16,16 @@
             return newId;
         }
 
+        public Todo Delete(int id)
+        {
+            var existingTodo = _todos.FirstOrDefault(t => t.Id == id);
+            if (existingTodo != null)
+            {
+                _todos.Remove(existingTodo);
+            }
+            return existingTodo;
+        }
+
         public Todo Put(int id, string description)
         {
             var existingTodo = _todos.FirstOrDefault(t => t.Id == id);

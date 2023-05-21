@@ -33,5 +33,12 @@ namespace TodoApp.Todos
             var existingTodo = repo.Put(id, putRequest.description);
             return existingTodo is null ? new NotFoundResult() : new NoContentResult();
         }
+
+        [HttpDelete("{id}", Name = "DeleteTodo")]
+        public ActionResult Delete(int id)
+        {
+            var existingTodo = repo.Delete(id);
+            return existingTodo is null ? new NotFoundResult() : new NoContentResult();
+        }
     }
 }
