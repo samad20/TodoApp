@@ -55,10 +55,10 @@ namespace TodoApp.Tests
                 Assert.IsInstanceOf<Todo>(result.Value);
                 Assert.AreEqual("Test1", result.Value?.description);
             }
-            
+
         }
         public class Post {
-           
+
             [Test]
             public void AddsTodo_AndReturnNewId()
             {
@@ -94,6 +94,33 @@ namespace TodoApp.Tests
                 return (int)resultValue;
             }
         }
+        public class Put
+        {
+            [Test]
+            public void UpdatesTodo()
+            {
+                //Arrange
+                var todoRequest1 = CreateTodoPutRequest("UpdatedTodo1");
+                var todoRequest2 = CreateTodoPutRequest("UpdatedTodo2");
+                var sut = CreateTodoController("Todo1", "Todo2");
+
+                //Act
+                sut.Put(0, todoRequest1);
+                sut.Put(1, todoRequest2);
+                var UpdatedTodo1 = sut.Get(0).Value;
+                var UpdatedTodo2 = sut.Get(1).Value;
+                //Assert
+
+                Assert.AreEqual(todoRequest1.description, UpdatedTodo1?.description);
+                Assert.AreEqual(todoRequest2.description, UpdatedTodo2?.description);
+            }
+            private static TodoPutRequest CreateTodoPutRequest(string description)
+            {
+                return new TodoPutRequest(description);
+            }
+        }
+
+
         public static TodoController CreateTodoController(params string[] todos)
         {
             var repo = new InMemoryTodoRepository(todos.Select((descrepition, id) => new Todo(id, descrepition)));
