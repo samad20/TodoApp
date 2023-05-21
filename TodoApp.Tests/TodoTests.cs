@@ -73,7 +73,7 @@ namespace TodoApp.Tests
                 using var app = await TestHelpers.StartWebApplication();
                 var client = TestHelpers.CreateRestClient(app);
                 var request = new RestRequest("todo");
-                request.AddParameter("application/json", $"{{\"description\":\"test\"}}", ParameterType.RequestBody);
+                request.AddJsonBody($"{{\"description\":\"test\"}}");
                 //Act
                 var response = client.Post(request);
                 //Assert
@@ -82,5 +82,57 @@ namespace TodoApp.Tests
                 response.AssertLocationHeaders("todo/0");
             }
         }
+
+        public class Put
+        {
+            [TestCase("")]
+            [TestCase("{}")]
+            [TestCase($"{{\"description\":\"\"}}")]
+            public async Task GivenInvalidJsonBody_ShouldResturn400BadRequest(string jsonBody)
+            {
+                //Arrange
+                var todoList = TestHelpers.CreateTodoList("mytodo0");
+                using var app = await TestHelpers.StartWebApplication(todoList);
+                var client = TestHelpers.CreateRestClient(app);
+                var request = new RestRequest("todo/0");
+                request.AddJsonBody(jsonBody);
+                //Act
+                var response = client.Put(request);
+                //Assert
+                response.AssertIs400BadRequest();
+
+            }
+            [Test]
+            public async Task GivenIdNotFound_ShouldResturn404NotFound()
+            {
+                //Arrange
+                using var app = await TestHelpers.StartWebApplication();
+                var client = TestHelpers.CreateRestClient(app);
+                var request = new RestRequest("todo/0");
+                request.AddJsonBody($"{{\"description\":\"test\"}}");
+                //Act
+                var response = client.Put(request);
+                //Assert
+                response.AssertIs404NotFound();
+            }
+
+            [Test]
+            public async Task GivenValidIdAndDescription_ShouldResturn204NoContent()
+            {
+                //Arrange
+                var todoList = TestHelpers.CreateTodoList("mytodo0", "mytodo1");
+                using var app = await TestHelpers.StartWebApplication(todoList);
+                var client = TestHelpers.CreateRestClient(app);
+                var request = new RestRequest("todo/1");
+                request.AddJsonBody($"{{\"description\":\"Updated todo description\"}}");
+                //Act
+                var response = client.Put(request);
+                //Assert
+                response.AssertIs204NoContent();
+                //var updateResponse = client.Get(new RestRequest("todo/1"));
+                //updateResponse.Content.AssertIsJsonForTodo(new Todos.Todo(1, "Updated todo description"));
+            }
+        }
     }
 }
+
